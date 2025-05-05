@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Compress your images online with adjustable quality levels. Optimize images for web use and improve SEO performance."/>
+  <title>Online Image Compression Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background: #0073e6;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 5px;
+    }
+    .upload-section, .result-section {
+      margin-bottom: 2rem;
+    }
+    .upload-section input[type="file"] {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .compression-level {
+      margin-bottom: 1rem;
+    }
+    .compression-level label {
+      margin-right: 1rem;
+    }
+    .result-section img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .ads {
+      margin: 2rem 0;
+      text-align: center;
+    }
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    @media (max-width: 600px) {
+      main {
+        margin: 1rem;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Online Image Compression Tool</h1>
+    <p>Optimize your images for faster web performance</p>
+  </header>
+
+  <main>
+    <section class="upload-section">
+      <h2>Upload Image</h2>
+      <input type="file" id="imageInput" accept="image/*" />
+      <div class="compression-level">
+        <label><input type="radio" name="quality" value="0.3" checked /> Low</label>
+        <label><input type="radio" name="quality" value="0.6" /> Medium</label>
+        <label><input type="radio" name="quality" value="0.9" /> High</label>
+      </div>
+      <button id="compressBtn">Compress Image</button>
+    </section>
+
+    <div class="ads">
+      <!-- Google AdSense Ad Unit -->
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+        crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-client="ca-app-pub-3019985057781583~2627708897"
+        data-ad-slot="ca-app-pub-3019985057781583/8237900864"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <section class="result-section">
+      <h2>Compressed Image</h2>
+      <img id="compressedImage" alt="Compressed image preview" loading="lazy" />
+      <a id="downloadLink" href="#" download="compressed-image.jpg" style="display:none;">Download Compressed Image</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ImageCompressor. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const compressBtn = document.getElementById('compressBtn');
+    const compressedImage = document.getElementById('compressedImage');
+    const downloadLink = document.getElementById('downloadLink');
+
+    compressBtn.addEventListener('click', () => {
+      const file = imageInput.files[0];
+      if (!file) {
+        alert('Please upload an image.');
+        return;
+      }
+
+      const quality = document.querySelector('input[name="quality"]:checked').value;
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+
+          canvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob);
+            compressedImage.src = url;
+            downloadLink.href = url;
+            downloadLink.style.display = 'inline-block';
+          }, 'image/jpeg', parseFloat(quality));
+        }
+        img.src = event.target.result;
+      }
+
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
